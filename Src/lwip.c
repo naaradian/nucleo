@@ -89,91 +89,34 @@ void My_ChangeIp(void) {
 	  netif_set_addr(&gnetif, &ipaddr, &netmask,&gw);
 }
 
-void My_MX_LWIP_Init(void)
-{
-  /* IP addresses initialization */
-/*
-  IP_ADDRESS[0] = 192;
-  IP_ADDRESS[1] = 168;
-  IP_ADDRESS[2] = 3;
-  IP_ADDRESS[3] = 220;
-  NETMASK_ADDRESS[0] = 255;
-  NETMASK_ADDRESS[1] = 255;
-  NETMASK_ADDRESS[2] = 255;
-  NETMASK_ADDRESS[3] = 0;
-  GATEWAY_ADDRESS[0] = 192;
-  GATEWAY_ADDRESS[1] = 168;
-  GATEWAY_ADDRESS[2] = 3;
-  GATEWAY_ADDRESS[3] = 1;
-  */
-  /* Initilialize the LwIP stack with RTOS */
-//  tcpip_init( NULL, NULL );
-
-//  netif_set_down(&gnetif);
-
-//  netif_remove(&gnetif);
-
-  /* IP addresses initialization without DHCP (IPv4) */
-  IP4_ADDR(&ipaddr, IP_ADDRESS[0], IP_ADDRESS[1], IP_ADDRESS[2], IP_ADDRESS[3]);
-  IP4_ADDR(&netmask, NETMASK_ADDRESS[0], NETMASK_ADDRESS[1] , NETMASK_ADDRESS[2], NETMASK_ADDRESS[3]);
-  IP4_ADDR(&gw, GATEWAY_ADDRESS[0], GATEWAY_ADDRESS[1], GATEWAY_ADDRESS[2], GATEWAY_ADDRESS[3]);
-
-
-
-  /* add the network interface (IPv4/IPv6) with RTOS */
-  netif_add(&gnetif, &ipaddr, &netmask, &gw, NULL, &ethernetif_init, &tcpip_input);
-
-  /* Registers the default network interface */
-  netif_set_default(&gnetif);
-
-  if (netif_is_link_up(&gnetif))
-  {
-    /* When the netif is fully configured this function must be called */
-    netif_set_up(&gnetif);
-  }
-  else
-  {
-    /* When the netif link is down this function must be called */
-    netif_set_down(&gnetif);
-  }
-}
 void MyCheckLink(void) {
+/*
+	uint32_t regvalue=0;
+	static unsigned char prev_state = 0;
+//	HAL_ETH_ReadPHYRegister(&heth, PHY_MISR, &regvalue); // Clears PHY intterrupt output
+	HAL_ETH_ReadPHYRegister(&heth, PHY_SR, &regvalue); // Get Link Status
+	unsigned char linkup= !(regvalue & PHY_LINK_STATUS);
 
-	 IP4_ADDR(&ipaddr, IP_ADDRESS[0], IP_ADDRESS[1], IP_ADDRESS[2], IP_ADDRESS[3]);
-	  IP4_ADDR(&netmask, NETMASK_ADDRESS[0], NETMASK_ADDRESS[1] , NETMASK_ADDRESS[2], NETMASK_ADDRESS[3]);
-	  IP4_ADDR(&gw, GATEWAY_ADDRESS[0], GATEWAY_ADDRESS[1], GATEWAY_ADDRESS[2], GATEWAY_ADDRESS[3]);
-
-	 /* add the network interface (IPv4/IPv6) with RTOS */
-//	  netif_add(&gnetif, &ipaddr, &netmask, &gw, NULL, &ethernetif_init, &tcpip_input);
-
-	  /* Registers the default network interface */
-//	  netif_set_default(&gnetif);
-	//  ethernetif_update_config(&gnetif);
+	if(linkup && !prev_state) {
+		prev_state = 1;
+	//	netif_set_link_up(&gnetif);
+		printf("\n\r Link! \n");
+	}
+	else if(!linkup && prev_state) {
+		prev_state = 0;
+		printf("\n\r No Link! \n");
+	}
+*/
 	  if (netif_is_link_up(&gnetif))
 	  {
-	//	  ethernetif_init(&gnetif);
-	//	  ethernetif_update_config(&gnetif);
-	    /* When the netif is fully configured this function must be called */
-	//    netif_set_up(&gnetif);
 	  }
 	  else
 	  {
-	    /* When the netif link is down this function must be called */
-	//    netif_set_down(&gnetif);
-	//	  low_level_init(&gnetif);
-	//	My_ethernetif_init(&gnetif);
-		//  tcpip_init( NULL, NULL );
-	//	netif_remove(&gnetif);
-	//	netif_add(&gnetif, &ipaddr, &netmask, &gw, NULL, &ethernetif_init, &tcpip_input);
-	//	netif_remove(struct netif *netif)
-		  /* Registers the default network interface */
-//	  netif_set_default(&gnetif);
 		netif_set_link_up(&gnetif);
-		  netif_set_up(&gnetif);
-		  ethernetif_update_config(&gnetif);
+		netif_set_up(&gnetif);
+		ethernetif_update_config(&gnetif);
 	  }
 }
-
 /* USER CODE END 2 */
 
 /**
