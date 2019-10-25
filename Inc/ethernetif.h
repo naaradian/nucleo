@@ -64,7 +64,8 @@ struct link_str {
 
 /* Within 'USER CODE' section, code will be kept by default at each generation */
 /* USER CODE BEGIN 0 */
-extern err_t My_ethernetif_init(struct netif *netif);
+//extern err_t My_ethernetif_init(struct netif *netif);
+extern void SetMAC(void);
 /* USER CODE END 0 */
 
 /* Exported functions ------------------------------------------------------- */

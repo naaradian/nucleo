@@ -166,6 +166,7 @@ void SetValue(int type , unsigned long val) {
 				IP_ADDRESS[1] = (val>>16) & 0xff;
 				IP_ADDRESS[2] = (val>>8)  & 0xff;
 				IP_ADDRESS[3] = val       & 0xff;
+				 My_ChangeIp();
 						 break;
 		case 7 : MyMACAddr[0] = val>>16;
 				MyMACAddr[1] = (val>>8) & 0xff;
@@ -174,16 +175,19 @@ void SetValue(int type , unsigned long val) {
 	 	case 8 : MyMACAddr[3] = val>>16;
 	 			MyMACAddr[4] = (val>>8) & 0xff;
 	 			MyMACAddr[5] = val      & 0xff;
+	 			//it can be used after restart
 						 break;
 		case 9 : GATEWAY_ADDRESS[0] = val>>24;
 				GATEWAY_ADDRESS[1] = (val>>16) & 0xff;
 				GATEWAY_ADDRESS[2] = (val>>8)  & 0xff;
 				GATEWAY_ADDRESS[3] = val       & 0xff;
+				 My_ChangeIp();
 						 break;
 	 	case 10 : NETMASK_ADDRESS[0] = val>>24;
 	 			NETMASK_ADDRESS[1] = (val>>16) & 0xff;
 	 			NETMASK_ADDRESS[2] = (val>>8)  & 0xff;
 	 			NETMASK_ADDRESS[3] = val       & 0xff;
+	 			 My_ChangeIp();
 							break;	
 		default: break;
 	}

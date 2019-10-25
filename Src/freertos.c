@@ -170,9 +170,10 @@ void StartDefaultTask(void const * argument)
   /* USER CODE BEGIN StartDefaultTask */
   // upper MX_LWIP_Init(); need comment!!!!
   memset(RcvBuff, 0 ,RCV_BUFF_SIZE);
-  ReadStorage();
+  ReadStorage();  //for have property ip
   //My_MX_LWIP_Init();
-  My_ChangeIp();
+  My_ChangeIp();  //need add to remote
+//  SetMAC();
  // HAL_WWDG_Refresh(&hwwdg);
 //  uint8_t testrdata[RD_SIZE];
 //  uint8_t* testrdata = new  uint8_t[RD_SIZE];

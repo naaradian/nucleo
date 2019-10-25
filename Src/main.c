@@ -149,6 +149,7 @@ int main(void)
 //  My_MX_LWIP_Init();
 //t WriteStorage();
  // HAL_WWDG_Refresh(&hwwdg);
+    ReadStorage();  //for have property mac
   /* USER CODE END 2 */
 
   /* Call init function for freertos objects (in freertos.c) */
