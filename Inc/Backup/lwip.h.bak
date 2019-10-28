@@ -70,11 +70,16 @@
 #endif /* WITH_RTOS */
 
 /* USER CODE BEGIN 0 */
+//#define PHY_MISR 0x12
+//#define PHY_SR 0x10
+#define PHY_LINK_STATUS 0x0001
+
  extern uint8_t IP_ADDRESS[4];
  extern uint8_t NETMASK_ADDRESS[4];
  extern uint8_t GATEWAY_ADDRESS[4];
  extern void MyCheckLink(void);
  extern void MX_LWIP_Init(void);
+ extern void My_ChangeIp(void);
 /* USER CODE END 0 */
 
 /* Global Variables ----------------------------------------------------------*/

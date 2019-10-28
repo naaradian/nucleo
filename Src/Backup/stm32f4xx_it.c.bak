@@ -63,7 +63,7 @@ void SysTick_Handler(void)
   osSystickHandler();
   /* USER CODE BEGIN SysTick_IRQn 1 */
   if(!Reset) {
-  HAL_WWDG_Refresh(&hwwdg);
+ //t HAL_WWDG_Refresh(&hwwdg);
   }
   Time_Update();
   /* USER CODE END SysTick_IRQn 1 */

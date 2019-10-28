@@ -136,7 +136,7 @@ int main(void)
   MX_GPIO_Init();
   MX_DMA_Init();
   MX_USART2_UART_Init();
-  MX_WWDG_Init();
+ //t MX_WWDG_Init();
 
   /* USER CODE BEGIN 2 */
 //  IAP_tftpd_init();
@@ -149,6 +149,7 @@ int main(void)
 //  My_MX_LWIP_Init();
 //t WriteStorage();
  // HAL_WWDG_Refresh(&hwwdg);
+    ReadStorage();  //for have property mac
   /* USER CODE END 2 */
 
   /* Call init function for freertos objects (in freertos.c) */

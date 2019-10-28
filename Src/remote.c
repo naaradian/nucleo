@@ -203,6 +203,7 @@ char ret = 0;
 int i;	
 int type = FindCommand(pCommand) ;
 end = &Buf[0];
+counter = 0;  //do not jump
  if(type)	
 //	if(strstr(pCommand, pRemote) == pCommand) // command or request
   //	if(1) // for test

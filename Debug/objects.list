@@ -14,7 +14,6 @@
 "Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim.o"
 "Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim_ex.o"
 "Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_uart.o"
-"Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_wwdg.o"
 "Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.o"
 "Middlewares/Third_Party/FreeRTOS/Source/croutine.o"
 "Middlewares/Third_Party/FreeRTOS/Source/event_groups.o"
@@ -111,5 +110,4 @@
 "Src/system_stm32f4xx.o"
 "Src/tftpserver.o"
 "Src/usart.o"
-"Src/wwdg.o"
 "startup/startup_stm32f429xx.o"

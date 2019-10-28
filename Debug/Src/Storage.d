@@ -27,7 +27,6 @@ Src/Storage.o: ../Src/Storage.c \
  D:/Users/user/keil/stm32cubemx/three_discav/nucleo144_IAP/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr.h \
  D:/Users/user/keil/stm32cubemx/three_discav/nucleo144_IAP/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr_ex.h \
  D:/Users/user/keil/stm32cubemx/three_discav/nucleo144_IAP/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h \
- D:/Users/user/keil/stm32cubemx/three_discav/nucleo144_IAP/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_wwdg.h \
  D:/Users/user/keil/stm32cubemx/three_discav/nucleo144_IAP/Inc/main.h \
  D:/Users/user/keil/stm32cubemx/three_discav/nucleo144_IAP/Middlewares/Third_Party/LwIP/src/include/lwip/opt.h \
  D:/Users/user/keil/stm32cubemx/three_discav/nucleo144_IAP/Inc/lwipopts.h \
@@ -134,8 +133,6 @@ D:/Users/user/keil/stm32cubemx/three_discav/nucleo144_IAP/Drivers/STM32F4xx_HAL_
 D:/Users/user/keil/stm32cubemx/three_discav/nucleo144_IAP/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr_ex.h:
 
 D:/Users/user/keil/stm32cubemx/three_discav/nucleo144_IAP/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h:
-
-D:/Users/user/keil/stm32cubemx/three_discav/nucleo144_IAP/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_wwdg.h:
 
 D:/Users/user/keil/stm32cubemx/three_discav/nucleo144_IAP/Inc/main.h:
 

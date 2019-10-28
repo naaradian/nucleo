@@ -53,7 +53,6 @@
 #include "dma.h"
 #include "lwip.h"
 #include "usart.h"
-#include "wwdg.h"
 #include "gpio.h"
 
 /* USER CODE BEGIN Includes */
@@ -136,7 +135,6 @@ int main(void)
   MX_GPIO_Init();
   MX_DMA_Init();
   MX_USART2_UART_Init();
-  MX_WWDG_Init();
 
   /* USER CODE BEGIN 2 */
 //  IAP_tftpd_init();

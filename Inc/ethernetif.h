@@ -77,7 +77,8 @@ void ethernetif_update_config(struct netif *netif);
 void ethernetif_notify_conn_changed(struct netif *netif);
 
 /* USER CODE BEGIN 1 */
-
+//ETH_DMADescTypeDef  DMARxDscrTab[ETH_RXBUFNB] __attribute__((at(0x20001000)));/* Ethernet Rx MA Descriptor */
+//ETH_DMADescTypeDef  DMATxDscrTab[ETH_TXBUFNB] __attribute__((at(0x20001100)));/* Ethernet Tx DMA Descriptor */
 /* USER CODE END 1 */
 #endif
 
