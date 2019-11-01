@@ -88,7 +88,10 @@ unsigned long counter = 0;
 
 /* Function prototypes -------------------------------------------------------*/
 void StartDefaultTask(void const * argument);
+
+extern void MX_LWIP_Init(void);
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
+
 /* USER CODE BEGIN FunctionPrototypes */
 void NVIC_SetVectorTable(unsigned long NVIC_VectTab, unsigned long Offset) {
          SCB->VTOR = NVIC_VectTab | (Offset & (unsigned int)0x1FFFFF80);
@@ -162,48 +165,32 @@ void MX_FREERTOS_Init(void) {
 void StartDefaultTask(void const * argument)
 {
   /* init code for LWIP */
-//  MX_LWIP_Init();
-//  memset(RcvBuff, 0 ,RCV_BUFF_SIZE);
+  MX_LWIP_Init();
   /* USER CODE BEGIN StartDefaultTask */
   memset(RcvBuff, 0 ,RCV_BUFF_SIZE);
-  ReadStorage();
-  My_MX_LWIP_Init();
- // HAL_WWDG_Refresh(&hwwdg);
-//  uint8_t testrdata[RD_SIZE];
-//  uint8_t* testrdata = new  uint8_t[RD_SIZE];
-//t  uint8_t* testrdata = malloc (RD_SIZE);
-//  memset(testrdata, 0, RD_SIZE);
- // uint8_t testDataToReceiveU[U2_BUFF_SIZE];
+  ReadStorage();  //for have property ip
+  My_ChangeIp();  //need add to remote
   uint8_t * testDataToReceiveU = malloc(U2_BUFF_SIZE);
   memset(testDataToReceiveU, 0, U2_BUFF_SIZE);
   //	uint8_t testDataToReceiveU[128];
   //	uint8_t RB;
   	uint8_t flag_rcv = 0;
-
-
   	uint16_t cnt = 0;
   	uint32_t tcnt = 0;
   	uint16_t rsize;
   	uint16_t rsize_old = U2_BUFF_SIZE;
   	uint16_t tmp, i;
-
   	uint16_t cnt_rd = 0;
   	uint16_t cnt_bf = 0;
-
   	uint32_t cnt_rcv = 0;
   	uint32_t cnt_tr = 0;
   	uint32_t cnt_cp = 0;
-
   	char* Buf = malloc(25);
-
   HAL_UART_Receive_DMA(&huart2,testDataToReceiveU, U2_BUFF_SIZE); //start receive
-
   IAP_tftpd_init(); //t
- // HAL_WWDG_Refresh(&hwwdg);
   /* Infinite loop */
   for(;;)
   {
-
 		if(osSemaphoreWait(myBinarySem03_USART2RHandle , 1) == osOK) {
 				cnt_rcv++;
 				flag_rcv ++;
@@ -231,40 +218,16 @@ void StartDefaultTask(void const * argument)
 				  tmp = 0;
 				  cnt_cp++;
 			  } //tcnt
-
   counter++;
   if(!(counter % 500)) {
-
-	  if(counter == 2000 ) {
-		//  ReadStorage(); //temporary
-		//  printfp("\n\r> ...Jump\n\r");
-		//  StartApp();
-	//	  FLASH_If_Init();
-	//	   WriteStorage();
-	//	   ReadStorage();
-	  }
-
-	  if(counter == 4000 ) {
-		//	WriteStorage(); //temporary
-			//  printfp("\n\r> ...Jump\n\r");
-			//  StartApp();
-		  }
-
-
-
-  if(counter > TIME_WAIT_JUMP) {
-	//  WriteStorage(); //temporary
-	//  printfp("\n\r> ...Jump\n\r");
-/*
+   if(counter > TIME_WAIT_JUMP) {
 	  HAL_UART_DMAStop(&huart2);
 	  HAL_Delay(150);
 	  HAL_UART_DeInit(&huart2);
 	  StartApp();
-*/
+   }
+	  printfpd("\r> %d", counter / 500);
   }
-//	  printfpd("\r> %d", counter / 500);
-  }
-//   HAL_WWDG_Refresh(&hwwdg);
     CheckWriteStorage();
     MyCheckLink();
 	osDelay(1);

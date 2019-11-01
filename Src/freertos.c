@@ -56,7 +56,6 @@
 #include "stm32f4xx_hal.h"
 #include "stm32f4xx_hal_cortex.h"
 #include "cmsis_os.h"
-//#include "dma.h"
 #include "lwip.h"
 #include "usart.h"
 #include "gpio.h"
@@ -67,8 +66,6 @@
 #include "tftpserver.h"
 #include "storage.h"
 #include "stdlib.h"
-#include "wwdg.h"
-#include "stm32f4xx_hal_wwdg.h"
 /* USER CODE END Includes */
 
 /* Variables -----------------------------------------------------------------*/
@@ -76,14 +73,15 @@ osThreadId defaultTaskHandle;
 osSemaphoreId myBinarySem03_USART2RHandle;
 
 /* USER CODE BEGIN Variables */
-#define TIME_WAIT_JUMP  (7500)//  (10000)
+
+
 #define 	NVIC_VectTab_FLASH   ((uint32_t)0x08000000)
 typedef  void (*pFunction)(void);
 pFunction Jump_To_Application;
 uint32_t JumpAddress;
 char RcvBuff[RCV_BUFF_SIZE];
 char TrBuff[TR_BUFF_SIZE];
-unsigned long counter = 0;
+unsigned long counter = TIME_WAIT_JUMP_LITTLE;
 /* USER CODE END Variables */
 
 /* Function prototypes -------------------------------------------------------*/
@@ -101,16 +99,12 @@ void jump_app( uint32_t address ) {
 	  __asm ("LDR PC, [R0, #4]\n");  //Load new program counter address;
 	  };
 uint8_t StartApp(void) {
-	  	  uint32_t sp;
-		  sp = *(__IO uint32_t*) (USER_FLASH_FIRST_PAGE_ADDRESS);         // Load SP
-	  	  HAL_NVIC_DisableIRQ(ETH_IRQn);
+	  	  HAL_ETH_DeInit(&heth);
 		  HAL_NVIC_DisableIRQ(DMA1_Stream5_IRQn);
 		  HAL_NVIC_DisableIRQ(DMA1_Stream6_IRQn);
 		  HAL_NVIC_DisableIRQ(DMA2_Stream0_IRQn);
 		  HAL_NVIC_DisableIRQ(DMA2_Stream3_IRQn);
 		  SysTick->CTRL = 0;                  // Dysable SysTick.
-	//	  SCB->VTOR = FLASH_BASE | 0x00008000;            // Move Vectors
-	//	  SCB->VTOR = FLASH_BASE | 0x00010000;            // Move Vectors
 		  jump_app(USER_FLASH_FIRST_PAGE_ADDRESS);
 		  return 0;
   };
@@ -168,48 +162,29 @@ void StartDefaultTask(void const * argument)
   MX_LWIP_Init();
 
   /* USER CODE BEGIN StartDefaultTask */
-  // upper MX_LWIP_Init(); need comment!!!!
+  counter = TIME_WAIT_JUMP_LITTLE;
   memset(RcvBuff, 0 ,RCV_BUFF_SIZE);
   ReadStorage();  //for have property ip
-  //My_MX_LWIP_Init();
   My_ChangeIp();  //need add to remote
-//  SetMAC();
- // HAL_WWDG_Refresh(&hwwdg);
-//  uint8_t testrdata[RD_SIZE];
-//  uint8_t* testrdata = new  uint8_t[RD_SIZE];
-//t  uint8_t* testrdata = malloc (RD_SIZE);
-//  memset(testrdata, 0, RD_SIZE);
- // uint8_t testDataToReceiveU[U2_BUFF_SIZE];
   uint8_t * testDataToReceiveU = malloc(U2_BUFF_SIZE);
   memset(testDataToReceiveU, 0, U2_BUFF_SIZE);
-  //	uint8_t testDataToReceiveU[128];
-  //	uint8_t RB;
   	uint8_t flag_rcv = 0;
-
-
   	uint16_t cnt = 0;
   	uint32_t tcnt = 0;
   	uint16_t rsize;
   	uint16_t rsize_old = U2_BUFF_SIZE;
   	uint16_t tmp, i;
-
   	uint16_t cnt_rd = 0;
   	uint16_t cnt_bf = 0;
-
   	uint32_t cnt_rcv = 0;
   	uint32_t cnt_tr = 0;
   	uint32_t cnt_cp = 0;
-
   	char* Buf = malloc(25);
-
   HAL_UART_Receive_DMA(&huart2,testDataToReceiveU, U2_BUFF_SIZE); //start receive
-
   IAP_tftpd_init(); //t
- // HAL_WWDG_Refresh(&hwwdg);
   /* Infinite loop */
   for(;;)
   {
-
 		if(osSemaphoreWait(myBinarySem03_USART2RHandle , 1) == osOK) {
 				cnt_rcv++;
 				flag_rcv ++;
@@ -219,13 +194,15 @@ void StartDefaultTask(void const * argument)
 			   tmp = rsize_old - rsize;
 		   } else if(rsize > rsize_old) {
 			   tmp = rsize_old + (uint16_t)U2_BUFF_SIZE - rsize;
-		   } else if(flag_rcv) {
-			   tmp = rsize;
-			   flag_rcv = 0;
 		   }
+		 //  else if(flag_rcv) {
+	//		   tmp = 0;//rsize;
+	//		   flag_rcv = 0;
+	//	   }
 		   rsize_old =  rsize;
 			  if(tmp > 0) {
-					HAL_GPIO_TogglePin( GPIOB, GPIO_PIN_14); //red
+				//	HAL_GPIO_TogglePin( GPIOB, GPIO_PIN_14); //red
+					HAL_GPIO_TogglePin( GPIOB, GPIO_PIN_0); //
 				  for(i = 0; i < tmp; i++) {
 						Receive(testDataToReceiveU[cnt_bf]);
 						testDataToReceiveU[cnt_bf] = 0;  //clear data
@@ -237,40 +214,14 @@ void StartDefaultTask(void const * argument)
 				  tmp = 0;
 				  cnt_cp++;
 			  } //tcnt
-
-  counter++;
+  counter--;
   if(!(counter % 500)) {
-
-	  if(counter == 2000 ) {
-		//  ReadStorage(); //temporary
-		//  printfp("\n\r> ...Jump\n\r");
-		//  StartApp();
-	//	  FLASH_If_Init();
-	//	   WriteStorage();
-	//	   ReadStorage();
-	  }
-
-	  if(counter == 4000 ) {
-		//	WriteStorage(); //temporary
-			//  printfp("\n\r> ...Jump\n\r");
-			//  StartApp();
-		  }
-
-
-
-  if(counter > TIME_WAIT_JUMP) {
-	//  WriteStorage(); //temporary
-	//  printfp("\n\r> ...Jump\n\r");
-/*
+   if(!counter) {
 	  HAL_UART_DMAStop(&huart2);
-	  HAL_Delay(150);
-	  HAL_UART_DeInit(&huart2);
 	  StartApp();
-*/
-  }
+   }
 //	  printfpd("\r> %d", counter / 500);
   }
-//   HAL_WWDG_Refresh(&hwwdg);
     CheckWriteStorage();
     MyCheckLink();
 	osDelay(1);

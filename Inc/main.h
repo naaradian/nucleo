@@ -74,11 +74,14 @@
 #define USE_IAP_HTTP   /* enable IAP using HTTP */
 //#define USE_LCD        /* enable LCD  */
 //#define USE_DHCP       /* enable DHCP, if disabled static address is used */
-#define U2_BUFF_SIZE	(32)
+#define U2_BUFF_SIZE	(128)
 #define RD_SIZE			(32)
 #define RCV_BUFF_SIZE	(257)
 #define TR_BUFF_SIZE	(257)
 #define WRITE_DELAY 	(1000)
+
+#define TIME_WAIT_JUMP  (8500)//  (10000)
+#define TIME_WAIT_JUMP_LITTLE  (3500)
 
 extern unsigned long DevId;
 extern unsigned long TestMode;
@@ -95,6 +98,7 @@ extern void printfpd(char * , unsigned long);
 extern void My_MX_LWIP_Init(void);
 extern unsigned long counter;
 extern volatile char u2tflag;
+
 /* USER CODE END Private defines */
 
 #ifdef __cplusplus

@@ -95,6 +95,7 @@ extern void printfpd(char * , unsigned long);
 extern void My_MX_LWIP_Init(void);
 extern unsigned long counter;
 extern volatile char u2tflag;
+
 /* USER CODE END Private defines */
 
 #ifdef __cplusplus

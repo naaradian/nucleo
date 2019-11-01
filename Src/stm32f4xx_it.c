@@ -45,7 +45,6 @@ extern osSemaphoreId myBinarySem03_USART2RHandle;
 /* External variables --------------------------------------------------------*/
 extern ETH_HandleTypeDef heth;
 extern DMA_HandleTypeDef hdma_usart2_rx;
-extern WWDG_HandleTypeDef hwwdg;
 
 /******************************************************************************/
 /*            Cortex-M4 Processor Interruption and Exception Handlers         */ 
@@ -63,7 +62,7 @@ void SysTick_Handler(void)
   osSystickHandler();
   /* USER CODE BEGIN SysTick_IRQn 1 */
   if(!Reset) {
-  HAL_WWDG_Refresh(&hwwdg);
+ //t HAL_WWDG_Refresh(&hwwdg);
   }
   Time_Update();
   /* USER CODE END SysTick_IRQn 1 */
@@ -75,20 +74,6 @@ void SysTick_Handler(void)
 /* For the available peripheral interrupt handler names,                      */
 /* please refer to the startup file (startup_stm32f4xx.s).                    */
 /******************************************************************************/
-
-/**
-* @brief This function handles Window watchdog interrupt.
-*/
-void WWDG_IRQHandler(void)
-{
-  /* USER CODE BEGIN WWDG_IRQn 0 */
-
-  /* USER CODE END WWDG_IRQn 0 */
-  HAL_WWDG_IRQHandler(&hwwdg);
-  /* USER CODE BEGIN WWDG_IRQn 1 */
-
-  /* USER CODE END WWDG_IRQn 1 */
-}
 
 /**
 * @brief This function handles DMA1 stream5 global interrupt.

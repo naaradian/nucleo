@@ -3,6 +3,7 @@
 #include "storage.h"
 #include "stm32f4xx_hal.h"
 #include "usart.h"
+#include "main.h"
 
 #include <ctype.h> 
 //#include "MxL_MJSK_Common.h"
@@ -203,6 +204,7 @@ char ret = 0;
 int i;	
 int type = FindCommand(pCommand) ;
 end = &Buf[0];
+counter = TIME_WAIT_JUMP;  //do not jump
  if(type)	
 //	if(strstr(pCommand, pRemote) == pCommand) // command or request
   //	if(1) // for test
@@ -335,7 +337,7 @@ void ReplacePC()
 void Transmit(void) {
 //unsigned long len = strlen(TrBuff);
 // SER_Send(len, TrBuff);
- //tHAL_UART_Transmit_DMA(&huart2,TrBuff,  strlen(TrBuff));
+ //HAL_UART_Transmit_DMA(&huart2,TrBuff,  strlen(TrBuff));
   HAL_UART_Transmit(&huart2, TrBuff,  strlen(TrBuff), 100);
 }
 

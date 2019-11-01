@@ -18,8 +18,7 @@ C_SRCS += \
 ../Src/syscalls.c \
 ../Src/system_stm32f4xx.c \
 ../Src/tftpserver.c \
-../Src/usart.c \
-../Src/wwdg.c 
+../Src/usart.c 
 
 OBJS += \
 ./Src/Storage.o \
@@ -36,8 +35,7 @@ OBJS += \
 ./Src/syscalls.o \
 ./Src/system_stm32f4xx.o \
 ./Src/tftpserver.o \
-./Src/usart.o \
-./Src/wwdg.o 
+./Src/usart.o 
 
 C_DEPS += \
 ./Src/Storage.d \
@@ -54,8 +52,7 @@ C_DEPS += \
 ./Src/syscalls.d \
 ./Src/system_stm32f4xx.d \
 ./Src/tftpserver.d \
-./Src/usart.d \
-./Src/wwdg.d 
+./Src/usart.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes

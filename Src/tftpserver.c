@@ -198,7 +198,7 @@ static void IAP_wrq_recv_callback(void *_args, struct udp_pcb *upcb, struct pbuf
      
     /* Write received data in Flash */
     FLASH_If_Write(&Flash_Write_Address, data_buffer ,count);
-    counter = 0;  //do not jump
+    counter = TIME_WAIT_JUMP;  //do not jump
     /* update our block number to match the block number just received */
     args->block++;
     /* update total bytes  */
@@ -234,6 +234,7 @@ static void IAP_wrq_recv_callback(void *_args, struct udp_pcb *upcb, struct pbuf
     LCD_DisplayStringLine(Line8, (uint8_t*)"State: Prog Finished ");
 #endif
     printfp("\n\rState: Prog Finished ");
+    HAL_GPIO_TogglePin( GPIOB, GPIO_PIN_14); //red
   }
   else
   {
@@ -292,7 +293,7 @@ static int IAP_tftp_process_write(struct udp_pcb *upcb, ip4_addr_t *to, int to_p
  
    Flash_Write_Address = USER_FLASH_FIRST_PAGE_ADDRESS;
 
-   counter = 0;  //do not jump
+   counter = TIME_WAIT_JUMP;  //do not jump
   //  printfpd("\n\ra: %x",Flash_Write_Address);
   /* initiate the write transaction by sending the first ack */
   IAP_tftp_send_ack_packet(upcb, to, to_port, args->block);
@@ -300,7 +301,7 @@ static int IAP_tftp_process_write(struct udp_pcb *upcb, ip4_addr_t *to, int to_p
   LCD_DisplayStringLine(Line8, (uint8_t*)"State: Programming..");
 #endif
   printfp("\n\rState: Programming..");
-  counter = 0;
+  counter = TIME_WAIT_JUMP;
   return 0;
 }
 
@@ -390,7 +391,7 @@ static void IAP_tftp_recv_callback(void *arg, struct udp_pcb *upcb, struct pbuf 
 
 #endif
     printfp("\n\rState: Erasing...");
-    counter = 0;
+    counter = TIME_WAIT_JUMP;
     /* Start the TFTP write mode*/
      IAP_tftp_process_write(upcb_tftp_data, addr, port);
   }

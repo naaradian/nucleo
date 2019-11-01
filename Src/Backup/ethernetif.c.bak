@@ -73,7 +73,8 @@
 #define IFNAME1 't'
 
 /* USER CODE BEGIN 1 */
-
+//ETH_DMADescTypeDef  DMARxDscrTab[ETH_RXBUFNB] __attribute__((at(0x20001000)));/* Ethernet Rx MA Descriptor */
+//ETH_DMADescTypeDef  DMATxDscrTab[ETH_TXBUFNB] __attribute__((at(0x20001100)));/* Ethernet Tx DMA Descriptor */
 /* USER CODE END 1 */
 
 /* Private variables ---------------------------------------------------------*/
@@ -94,6 +95,7 @@ __ALIGN_BEGIN uint8_t Rx_Buff[ETH_RXBUFNB][ETH_RX_BUF_SIZE] __ALIGN_END; /* Ethe
 
 #if defined ( __ICCARM__ ) /*!< IAR Compiler */
   #pragma data_alignment=4   
+
 #endif
 __ALIGN_BEGIN uint8_t Tx_Buff[ETH_TXBUFNB][ETH_TX_BUF_SIZE] __ALIGN_END; /* Ethernet Transmit Buffer */
 
@@ -107,7 +109,6 @@ osSemaphoreId s_xSemaphore = NULL;
 ETH_HandleTypeDef heth;
 
 /* USER CODE BEGIN 3 */
-
 /* USER CODE END 3 */
 
 /* Private functions ---------------------------------------------------------*/
@@ -249,7 +250,7 @@ static void low_level_init(struct netif *netif)
   MACAddr[2] = 0xE1;
   MACAddr[3] = 0x00;
   MACAddr[4] = 0x00;
-  MACAddr[5] = 0x00;
+  MACAddr[5] = 0x01;
   heth.Init.MACAddr = &MACAddr[0];
   heth.Init.RxMode = ETH_RXINTERRUPT_MODE;
   heth.Init.ChecksumMode = ETH_CHECKSUM_BY_HARDWARE;
@@ -684,6 +685,40 @@ u32_t sys_now(void)
 }
 
 /* USER CODE END 6 */
+
+/**
+  * @brief  This function sets the netif link status.
+  * @param  netif: the network interface
+  * @retval None
+  */  
+void ethernetif_set_link(void const *argument)
+{
+  uint32_t regvalue = 0;
+  struct link_str *link_arg = (struct link_str *)argument;
+  
+  for(;;)
+  {
+    /* Read PHY_BSR*/
+    HAL_ETH_ReadPHYRegister(&heth, PHY_BSR, &regvalue);
+    
+    regvalue &= PHY_LINKED_STATUS;
+    
+    /* Check whether the netif link down and the PHY link is up */
+    if(!netif_is_link_up(link_arg->netif) && (regvalue))
+    {
+      /* network cable is connected */ 
+      netif_set_link_up(link_arg->netif);        
+    }
+    else if(netif_is_link_up(link_arg->netif) && (!regvalue))
+    {
+      /* network cable is dis-connected */
+      netif_set_link_down(link_arg->netif);
+    }
+    
+    /* Suspend thread for 200 ms */
+    osDelay(200);
+  }
+}
 
 /* USER CODE BEGIN 7 */
 
