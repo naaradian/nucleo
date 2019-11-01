@@ -204,7 +204,11 @@ char ret = 0;
 int i;	
 int type = FindCommand(pCommand) ;
 end = &Buf[0];
+<<<<<<< HEAD
 counter = TIME_WAIT_JUMP;  //do not jump
+=======
+counter = 0;  //do not jump
+>>>>>>> 76f0d5d0f3e09a4393c23f32fb9683df722f9656
  if(type)	
 //	if(strstr(pCommand, pRemote) == pCommand) // command or request
   //	if(1) // for test

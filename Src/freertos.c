@@ -73,7 +73,11 @@ osThreadId defaultTaskHandle;
 osSemaphoreId myBinarySem03_USART2RHandle;
 
 /* USER CODE BEGIN Variables */
+<<<<<<< HEAD
 
+=======
+#define TIME_WAIT_JUMP  (7500)//  (10000)
+>>>>>>> 76f0d5d0f3e09a4393c23f32fb9683df722f9656
 
 #define 	NVIC_VectTab_FLASH   ((uint32_t)0x08000000)
 typedef  void (*pFunction)(void);
@@ -162,7 +166,10 @@ void StartDefaultTask(void const * argument)
   MX_LWIP_Init();
 
   /* USER CODE BEGIN StartDefaultTask */
+<<<<<<< HEAD
   counter = TIME_WAIT_JUMP_LITTLE;
+=======
+>>>>>>> 76f0d5d0f3e09a4393c23f32fb9683df722f9656
   memset(RcvBuff, 0 ,RCV_BUFF_SIZE);
   ReadStorage();  //for have property ip
   My_ChangeIp();  //need add to remote
@@ -214,9 +221,15 @@ void StartDefaultTask(void const * argument)
 				  tmp = 0;
 				  cnt_cp++;
 			  } //tcnt
+<<<<<<< HEAD
   counter--;
   if(!(counter % 500)) {
    if(!counter) {
+=======
+  counter++;
+  if(!(counter % 500)) {
+   if(counter > TIME_WAIT_JUMP) {
+>>>>>>> 76f0d5d0f3e09a4393c23f32fb9683df722f9656
 	  HAL_UART_DMAStop(&huart2);
 	  StartApp();
    }
