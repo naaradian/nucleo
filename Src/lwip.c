@@ -89,7 +89,7 @@ void My_ChangeIp(void) {
 	  netif_set_addr(&gnetif, &ipaddr, &netmask,&gw);
 }
 
-void MyCheckLink(void) {
+void MyCheckLink1(void) {
 /*
 	uint32_t regvalue=0;
 	static unsigned char prev_state = 0;
@@ -116,6 +116,42 @@ void MyCheckLink(void) {
 		netif_set_up(&gnetif);
 		ethernetif_update_config(&gnetif);
 	  }
+}
+
+void MyCheckLink(void) {
+
+	uint32_t regvalue=0;
+	static unsigned char prev_state = 1;
+//	HAL_ETH_ReadPHYRegister(&heth, PHY_MISR, &regvalue); // Clears PHY intterrupt output
+//	HAL_ETH_ReadPHYRegister(&heth, PHY_SR, &regvalue); // Get Link Status
+	HAL_ETH_ReadPHYRegister(&heth, 1, &regvalue); // Get Link Status
+	unsigned char linkup= regvalue & 4;
+
+	if(linkup && !prev_state) {
+		prev_state = 1;
+		netif_set_link_up(&gnetif);
+		netif_set_up(&gnetif);
+		ethernetif_update_config(&gnetif);
+	//	printfp("\n\r Link! \n");
+	}
+	else if(!linkup && prev_state) {
+		prev_state = 0;
+		netif_set_link_down(&gnetif);
+		netif_set_down(&gnetif);
+		ethernetif_update_config(&gnetif);
+	//	printfp("\n\r No Link! \n");
+	}
+/*
+	  if (netif_is_link_up(&gnetif))
+	  {
+	  }
+	  else
+	  {
+		netif_set_link_up(&gnetif);
+		netif_set_up(&gnetif);
+		ethernetif_update_config(&gnetif);
+	  }
+	  */
 }
 /* USER CODE END 2 */
 
